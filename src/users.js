@@ -10,11 +10,31 @@ router.use(function timeLog (req, res, next) {
   next();
 });
 
-// define the home page route
 router.get('/', function(req, res) {
-  const query = UserModel.find({});
-  query.exec(function(err, users) {
-    if(err) res.sendStatus(500);
-    res.send(users);
-  });
+  const name = req.query.name;
+  let query = {};
+  if(name) query = { name: name }
+
+  UserModel.find(query).exec()
+    .then(function(users) {
+      res.send(users);
+    })
+    .catch(function(err) {
+      console.log(`Failed to list users. ${err}`);
+      res.sendStatus(500);
+    });
+});
+
+router.post('/', function(req, res) {
+  const user_name = req.body.name;
+
+  UserModel.create({ name: user_name })
+    .then(function() {
+      console.log(`Create user ${user_name}`);
+      res.sendStatus(200);
+    })
+    .catch(function(err) {
+      console.log(`Failed to create user ${user_name}. ${err}`);
+      res.sendStatus(500);
+    });
 });
