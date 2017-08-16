@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const url = "mongodb://...";
+const url = 'mongodb://...';
 
 mongoose.Promise = global.Promise; // use ES6 native promise
 
