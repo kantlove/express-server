@@ -13,7 +13,7 @@ router.use(function timeLog (req, res, next) {
 router.get('/', function(req, res) {
   const name = req.query.name;
   let query = {};
-  if(name) query = { name: name }
+  if(name) query = { $text: { $search: name } };
 
   UserModel.find(query).exec()
     .then(function(users) {
